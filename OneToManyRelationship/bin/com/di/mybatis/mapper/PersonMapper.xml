@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.di.mybatis.mapper.PersonMapper">
+	<resultMap id = "PersonMapper" type="Person">
+		<id property = "id" column="id"/>
+		<result property = "name" column="name"/>
+		<collection property = "ticket" ofType="ticket">
+			<result column="id" property="id"/>
+			<result column="code" property="code"/>
+			<result column='c_id' property='c_id'/>
+		</collection>
+	</resultMap>
+	
+	<select id = "selectByName" parameterType="String" resultMap="PersonMapper">
+		select p.*,t.* FROM person p,ticket t WHERE p.name =#{name} AND t.c_id=p.id;
+	</select>
+	
+		
+	<select id ="selectAll" resultMap="PersonMapper">
+		SELECT * FROM person;
+	</select>
+	
+
+	
+	<insert id = "insert" parameterType="Person" useGeneratedKeys="true" keyProperty='id'>
+		INSERT INTO person (name) VALUES (#{name});
+	</insert>
+	
+	<update id = "update" parameterType = "Person">
+		UPDATE person
+		SET name = #{name}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id ="delete" parameterType="int">
+		DELETE from person WHERE id = #{id}
+	</delete>
+	
+	</mapper>
