@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.di.mybatis.mapper.OrderMapper">
+	<resultMap id = "OrderMapper" type="Order">
+		<id property = "order_id" column="order_id"/>
+		<result property = "code" column="code"/>
+		<result property ="total" column="total"/>
+		<collection property = "articles" ofType="Article">
+			<result column="article_id" property="article_id"/>
+			<result column="name" property="name"/>
+			<result column='price' property='price'/>
+		</collection>
+	</resultMap>
+	
+	<select id = "getArticleByOrder" parameterType="int" resultMap="OrderMapper">
+		SELECT o.*,a.* 
+		FROM ss_order o,ss_article a,ss_item i
+		WHERE i.order_id =o.order_id AND i.article_id=a.article_id AND o.order_id = #{id}
+	</select>
+	
+	</mapper>
